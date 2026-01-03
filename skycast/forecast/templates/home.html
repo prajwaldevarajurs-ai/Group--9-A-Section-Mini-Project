@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Forecast App</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Navigation -->
+    <nav>
+        <a href="/about/">About</a>
+        <a href="/contact/">Contact</a>
+        <a href="/searchhistory/">Search History</a>
+    </nav>
+
+    <h1>🌦 Weather Forecast Application</h1>
+
+    <!-- Search Box -->
+    <div class="search-box">
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="city" placeholder="Enter city name" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <!-- Error -->
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <!-- Current Weather (BIG & CENTER) -->
+    {% if weather %}
+        <div class="current-weather">
+            <h2>Current Weather in {{ city }}</h2>
+            <p>🌡 Temperature: {{ weather.main.temp }} °C</p>
+            <p>💧 Humidity: {{ weather.main.humidity }} %</p>
+            <p>💨 Wind Speed: {{ weather.wind.speed }} m/s</p>
+        </div>
+    {% endif %}
+
+    <!-- Forecast (SMALL & BELOW) -->
+    {% if forecast %}
+        <div class="forecast">
+            <h3>5-Day Forecast</h3>
+
+            {% for day in forecast %}
+                <div class="forecast-box">
+                    <p><strong>{{ day.date }}</strong></p>
+                    <p>🌡 {{ day.temp }} °C |
+                       💧 {{ day.humidity }} % |
+                       💨 {{ day.wind }} m/s</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
+
+
+

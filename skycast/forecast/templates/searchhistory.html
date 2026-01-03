@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search History</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Search History</h1>
+
+    {% if searches %}
+
+        <!-- TOP 3 SEARCHES -->
+        <h3>Recent Searches</h3>
+        <ul>
+            {% for search in searches|slice:":3" %}
+                <li>{{ search.city }} — {{ search.searched_at }}</li>
+            {% endfor %}
+        </ul>
+
+        <!-- HIDDEN OLDER SEARCHES -->
+        {% if searches|length > 3 %}
+            <div id="moreHistory" style="display: none;">
+                <h3>Older Searches</h3>
+                <ul>
+                    {% for search in searches|slice:"3:" %}
+                        <li>{{ search.city }} — {{ search.searched_at }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- TOGGLE BUTTON -->
+            <button onclick="toggleHistory()" id="toggleBtn">
+                View More
+            </button>
+        {% endif %}
+
+    {% else %}
+        <p>No search history available.</p>
+    {% endif %}
+
+    <br><br>
+    <a href="/">⬅ Back to Home</a>
+
+</div>
+
+<script>
+function toggleHistory() {
+    var historyDiv = document.getElementById("moreHistory");
+    var btn = document.getElementById("toggleBtn");
+
+    if (historyDiv.style.display === "none") {
+        historyDiv.style.display = "block";
+        btn.innerText = "View Less";
+    } else {
+        historyDiv.style.display = "none";
+        btn.innerText = "View More";
+    }
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
